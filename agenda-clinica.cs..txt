@@ -1,0 +1,208 @@
+from datetime import datetime
+
+# Clase Paciente para manejar la información de cada paciente
+class Paciente:
+    def _init_(self, id_paciente, nombre, edad, telefono):
+        self.id_paciente = id_paciente
+        self.nombre = nombre
+        self.edad = edad
+        self.telefono = telefono
+
+    def _str_(self):
+        return f"[{self.id_paciente}] {self.nombre}, {self.edad} años, Tel: {self.telefono}"
+
+
+# Clase Turno para gestionar los turnos
+class Turno:
+    def _init_(self, id_turno, paciente, fecha, hora, especialidad):
+        self.id_turno = id_turno
+        self.paciente = paciente
+        self.fecha = fecha
+        self.hora = hora
+        self.especialidad = especialidad
+
+    def _str_(self):
+        return (f"Turno [{self.id_turno}] - {self.paciente.nombre} - {self.especialidad} - "
+                f"{self.fecha} {self.hora}")
+
+
+# Clase Agenda para gestionar los turnos y pacientes
+class Agenda:
+    def _init_(self):
+        self.pacientes = []  # Lista de pacientes
+        self.turnos = []     # Lista de turnos
+
+    # Agregar un nuevo paciente
+    def agregar_paciente(self, id_paciente, nombre, edad, telefono):
+        paciente = Paciente(id_paciente, nombre, edad, telefono)
+        self.pacientes.append(paciente)
+
+    # Agregar un nuevo turno
+    def agregar_turno(self, id_turno, id_paciente, fecha, hora, especialidad):
+        paciente = self.buscar_paciente(id_paciente)
+        if paciente:
+            turno = Turno(id_turno, paciente, fecha, hora, especialidad)
+            self.turnos.append(turno)
+        else:
+            print(f"Error: No se encontró el paciente con ID {id_paciente}.")
+
+    # Buscar paciente por ID
+    def buscar_paciente(self, id_paciente):
+        for paciente in self.pacientes:
+            if paciente.id_paciente == id_paciente:
+                return paciente
+        return None
+
+    # Consultar todos los pacientes
+    def listar_pacientes(self):
+        print("Lista de Pacientes:")
+        for paciente in self.pacientes:
+            print(paciente)
+
+    # Consultar todos los turnos
+    def listar_turnos(self):
+        print("Lista de Turnos:")
+        for turno in self.turnos:
+            print(turno)
+
+    # Consultar turnos por especialidad
+    def consultar_turnos_por_especialidad(self, especialidad):
+        print(f"Turnos de la especialidad {especialidad}:")
+        for turno in self.turnos:
+            if turno.especialidad.lower() == especialidad.lower():
+                print(turno)
+
+
+# Ejemplo de uso
+if _name_ == "_main_":
+    agenda = Agenda()
+
+    # Agregar pacientes
+    agenda.agregar_paciente(1, "Juan Pérez", 30, "555-1234")
+    agenda.agregar_paciente(2, "María López", 25, "555-5678")
+
+    # Agregar turnos
+    agenda.agregar_turno(1, 1, "2025-01-15", "10:00", "Cardiología")
+    agenda.agregar_turno(2, 2, "2025-01-16", "11:00", "Dermatología")
+
+    # Consultar pacientes
+    agenda.listar_pacientes()
+
+    # Consultar turnos
+    agenda.listar_turnos()
+
+    # Consultar turnos por especialidad
+    agenda.consultar_turnos_por_especialidad("Cardiología")
+
+
+from typing import List, Dict
+
+# Clase Paciente (registro)
+class Paciente:
+    def _init_(self, id_paciente: int, nombre: str, edad: int, telefono: str):
+        self.id_paciente = id_paciente
+        self.nombre = nombre
+        self.edad = edad
+        self.telefono = telefono
+
+    def _str_(self):
+        return f"ID: {self.id_paciente}, Nombre: {self.nombre}, Edad: {self.edad}, Teléfono: {self.telefono}"
+
+# Clase Turno (registro)
+class Turno:
+    def _init_(self, id_turno: int, paciente: Paciente, fecha: str, hora: str, especialidad: str):
+        self.id_turno = id_turno
+        self.paciente = paciente
+        self.fecha = fecha
+        self.hora = hora
+        self.especialidad = especialidad
+
+    def _str_(self):
+        return (f"Turno ID: {self.id_turno}, Fecha: {self.fecha}, Hora: {self.hora}, "
+                f"Especialidad: {self.especialidad}, Paciente: [{self.paciente}]")
+
+# Clase Agenda (estructura que organiza los turnos)
+class Agenda:
+    def _init_(self):
+        self.turnos: List[Turno] = []  # Lista de turnos
+
+    # Agregar un turno
+    def agregar_turno(self, turno: Turno):
+        self.turnos.append(turno)
+
+    # Consultar turnos por especialidad
+    def consultar_por_especialidad(self, especialidad: str) -> List[Turno]:
+        return [turno for turno in self.turnos if turno.especialidad.lower() == especialidad.lower()]
+
+    # Consultar turnos por fecha
+    def consultar_por_fecha(self, fecha: str) -> List[Turno]:
+        return [turno for turno in self.turnos if turno.fecha == fecha]
+
+    # Visualizar todos los turnos
+    def visualizar_turnos(self):
+        if not self.turnos:
+            print("No hay turnos registrados.")
+        else:
+            for turno in self.turnos:
+                print(turno)
+
+# Función principal para probar el sistema
+def main():
+    # Crear pacientes
+    paciente1 = Paciente(1, "Juan Pérez", 30, "123456789")
+    paciente2 = Paciente(2, "María Gómez", 25, "987654321")
+    paciente3 = Paciente(3, "Carlos López", 40, "567890123")
+
+    # Crear agenda
+    agenda = Agenda()
+
+    # Crear y agregar turnos
+    turno1 = Turno(1, paciente1, "2025-01-14", "10:00", "Cardiología")
+    turno2 = Turno(2, paciente2, "2025-01-14", "11:00", "Neurología")
+    turno3 = Turno(3, paciente3, "2025-01-15", "09:30", "Cardiología")
+
+    agenda.agregar_turno(turno1)
+    agenda.agregar_turno(turno2)
+    agenda.agregar_turno(turno3)
+
+    # Menú de opciones
+    while True:
+        print("\n--- Agenda de Turnos ---")
+        print("1. Visualizar todos los turnos")
+        print("2. Consultar turnos por especialidad")
+        print("3. Consultar turnos por fecha")
+        print("4. Salir")
+
+        opcion = input("Seleccione una opción: ")
+
+        if opcion == "1":
+            print("\nTurnos registrados:")
+            agenda.visualizar_turnos()
+        elif opcion == "2":
+            especialidad = input("Ingrese la especialidad a consultar: ")
+            turnos_especialidad = agenda.consultar_por_especialidad(especialidad)
+            if turnos_especialidad:
+                print(f"\nTurnos en {especialidad}:")
+                for turno in turnos_especialidad:
+                    print(turno)
+            else:
+                print("No hay turnos para la especialidad ingresada.")
+        elif opcion == "3":
+            fecha = input("Ingrese la fecha (YYYY-MM-DD) a consultar: ")
+            turnos_fecha = agenda.consultar_por_fecha(fecha)
+            if turnos_fecha:
+                print(f"\nTurnos para la fecha {fecha}:")
+                for turno in turnos_fecha:
+                    print(turno)
+            else:
+                print("No hay turnos para la fecha ingresada.")
+        elif opcion == "4":
+            print("Saliendo del sistema.")
+            break
+        else:
+            print("Opción no válida. Intente nuevamente.")
+
+# Ejecutar la función principal
+if _name_ == "_main_":
+    main()
+
