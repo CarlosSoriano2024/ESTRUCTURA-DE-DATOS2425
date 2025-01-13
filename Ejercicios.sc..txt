@@ -1,0 +1,127 @@
+Ejercicios resueltos utilizando C# y Programación Orientada a Objetos (POO) cuando sea posible.
+
+
+Ejercicio 1
+
+Programa que almacena asignaturas en una lista y las muestra por pantalla.
+
+using System;
+using System.Collections.Generic;
+
+class Program
+{
+    static void Main()
+    {
+        List<string> asignaturas = new List<string> { "Matemáticas", "Física", "Química", "Historia", "Lengua" };
+        Console.WriteLine("Asignaturas del curso:");
+        foreach (var asignatura in asignaturas)
+        {
+            Console.WriteLine(asignatura);
+        }
+    }
+}
+
+
+---
+
+Ejercicio 2
+
+Programa que muestra las asignaturas con el mensaje personalizado.
+
+using System;
+using System.Collections.Generic;
+
+class Program
+{
+    static void Main()
+    {
+        List<string> asignaturas = new List<string> { "Matemáticas", "Física", "Química", "Historia", "Lengua" };
+        foreach (var asignatura in asignaturas)
+        {
+            Console.WriteLine($"Yo estudio {asignatura}");
+        }
+    }
+}
+
+
+---
+
+Ejercicio 3
+
+Programa que pide notas al usuario y las muestra con un mensaje.
+
+using System;
+using System.Collections.Generic;
+
+class Program
+{
+    static void Main()
+    {
+        List<string> asignaturas = new List<string> { "Matemáticas", "Física", "Química", "Historia", "Lengua" };
+        Dictionary<string, double> notas = new Dictionary<string, double>();
+
+        foreach (var asignatura in asignaturas)
+        {
+            Console.Write($"Introduce la nota para {asignatura}: ");
+            double nota = Convert.ToDouble(Console.ReadLine());
+            notas[asignatura] = nota;
+        }
+
+        Console.WriteLine("\nNotas finales:");
+        foreach (var item in notas)
+        {
+            Console.WriteLine($"En {item.Key} has sacado {item.Value}");
+        }
+    }
+}
+
+
+---
+
+Ejercicio 4
+
+Programa que pide números de lotería, los ordena y muestra.
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+class Program
+{
+    static void Main()
+    {
+        Console.WriteLine("Introduce los números ganadores de la lotería (separados por espacios):");
+        string input = Console.ReadLine();
+        List<int> numeros = input.Split(' ').Select(int.Parse).ToList();
+
+        numeros.Sort();
+
+        Console.WriteLine("Números ganadores ordenados:");
+        Console.WriteLine(string.Join(", ", numeros));
+    }
+}
+
+
+---
+
+Ejercicio 5
+
+Programa que muestra números del 1 al 10 en orden inverso separados por comas.
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+class Program
+{
+    static void Main()
+    {
+        List<int> numeros = Enumerable.Range(1, 10).ToList();
+        numeros.Reverse();
+
+        Console.WriteLine("Números del 1 al 10 en orden inverso:");
+        Console.WriteLine(string.Join(", ", numeros));
+    }
+}
+
+
