@@ -1,0 +1,109 @@
+"Verificación de Paréntesis Balanceados en una Fórmula Matemática"
+
+
+using System;
+using System.Collections.Generic;
+
+public class Program
+{
+    public static bool AreParenthesesBalanced(string expression)
+    {
+        Stack<char> stack = new Stack<char>();
+
+        foreach (char c in expression)
+        {
+            if (c == '(' || c == '{' || c == '[')
+            {
+                stack.Push(c);
+            }
+            else if (c == ')' || c == '}' || c == ']')
+            {
+                if (stack.Count == 0)
+                {
+                    return false;
+                }
+
+                char openBracket = stack.Pop();
+                if ((c == ')' && openBracket != '(') ||
+                    (c == '}' && openBracket != '{') ||
+                    (c == ']' && openBracket != '['))
+                {
+                    return false;
+                }
+            }
+        }
+
+        return stack.Count == 0;
+    }
+
+    public static void Main()
+    {
+        string expression = "{7+(8*5)-[(9-7)+(4+1)]}";
+        bool result = AreParenthesesBalanced(expression);
+        Console.WriteLine(result ? "Fórmula balanceada" : "Fórmula no balanceada");
+    }
+}
+
+Explicación del Código:
+Stack\<char> stack = new Stack\<char>(): Se inicializa una pila para almacenar los paréntesis abiertos.
+
+foreach (char c in expression): Se itera sobre cada carácter de la expresión.
+
+if (c == '(' || c == '{' || c == '['): Si el carácter es un paréntesis de apertura, se agrega a la pila.
+
+else if (c == ')' || c == '}' || c == ']'): Si el carácter es un paréntesis de cierre, se verifica si hay un paréntesis de apertura correspondiente en la pila.
+
+return stack.Count == 0: Al final, si la pila está vacía, significa que todos los paréntesis están balanceados.
+
+Algoritmo para Resolver las Torres de Hanoi
+
+using System;
+using System.Collections.Generic;
+
+public class TowersOfHanoi
+{
+    public static void SolveHanoi(int n, Stack<int> from, Stack<int> to, Stack<int> aux)
+    {
+        if (n > 0)
+        {
+            SolveHanoi(n - 1, from, aux, to);
+            to.Push(from.Pop());
+            PrintTowers();
+            SolveHanoi(n - 1, aux, to, from);
+        }
+    }
+
+    public static void PrintTowers()
+    {
+        Console.WriteLine("Estado actual de las torres:");
+        // Aquí podrías imprimir el estado de las torres (pila de discos) si quieres.
+    }
+
+    public static void Main()
+    {
+        int n = 3; // Número de discos
+        Stack<int> from = new Stack<int>();
+        Stack<int> to = new Stack<int>();
+        Stack<int> aux = new Stack<int>();
+
+        for (int i = n; i >= 1; i--)
+        {
+            from.Push(i);
+        }
+
+        SolveHanoi(n, from, to, aux);
+    }
+}
+
+Explicación del Código:
+SolveHanoi(int n, Stack<int> from, Stack<int> to, Stack<int> aux): Función recursiva para resolver las Torres de Hanoi.
+
+n > 0: Verifica si hay discos que mover.
+
+SolveHanoi(n - 1, from, aux, to): Mueve n-1 discos de la torre "from" a la torre "aux" usando "to" como auxiliar.
+
+to.Push(from.Pop()): Mueve el disco restante de "from" a "to".
+
+PrintTowers(): Imprime el estado actual de las torres.
+
+SolveHanoi(n - 1, aux, to, from): Mueve n-1 discos de la torre "aux" a la torre "to" usando "from" como auxiliar.
