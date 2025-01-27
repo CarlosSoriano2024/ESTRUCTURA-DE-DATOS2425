@@ -1,0 +1,88 @@
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+class Vehicle:
+    def __init__(self, plate, brand, model, year, price):
+        self.plate = plate
+        self.brand = brand
+        self.model = model
+        self.year = year
+        self.price = price
+
+class LinkedList:
+    def __init__(self):
+        self.head = None
+
+    def add_vehicle(self, vehicle):
+        new_node = Node(vehicle)
+        if not self.head:
+            self.head = new_node
+        else:
+            current = self.head
+            while current.next:
+                current = current.next
+            current.next = new_node
+
+    def search_vehicle_by_plate(self, plate):
+        current = self.head
+        while current:
+            if current.data.plate == plate:
+                return current.data
+            current = current.next
+        return None
+
+    def get_vehicles_by_year(self, year):
+        vehicles = []
+        current = self.head
+        while current:
+            if current.data.year == year:
+                vehicles.append(current.data)
+            current = current.next
+        return vehicles
+
+    def get_all_vehicles(self):
+        vehicles = []
+        current = self.head
+        while current:
+            vehicles.append(current.data)
+            current = current.next
+        return vehicles
+
+    def remove_vehicle(self, plate):
+        current = self.head
+        previous = None
+        while current:
+            if current.data.plate == plate:
+                if previous:
+                    previous.next = current.next
+                else:
+                    self.head = current.next
+                return current.data
+            previous = current
+            current = current.next
+        return None
+
+# Ejemplo de uso
+parking_lot = LinkedList()
+
+# Agregar vehículos
+parking_lot.add_vehicle(Vehicle('ABC123', 'Toyota', 'Corolla', 2020, 20000))
+parking_lot.add_vehicle(Vehicle('DEF456', 'Honda', 'Civic', 2021, 22000))
+parking_lot.add_vehicle(Vehicle('GHI789', 'Ford', 'Fiesta', 2019, 18000))
+
+# Buscar vehículo por placa
+print(parking_lot.search_vehicle_by_plate('DEF456'))
+
+# Ver vehículos por año
+print(parking_lot.get_vehicles_by_year(2020))
+
+# Ver todos los vehículos registrados
+print(parking_lot.get_all_vehicles())
+
+# Eliminar vehículo por placa
+print(parking_lot.remove_vehicle('DEF456'))
+
+# Ver todos los vehículos registrados después de eliminar uno
+print(parking_lot.get_all_vehicles())
