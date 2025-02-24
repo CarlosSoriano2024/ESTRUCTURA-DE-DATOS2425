@@ -1,0 +1,74 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+public class Ciudadano
+{
+    public int Id { get; set; }
+    public string Nombre { get; set; }
+    public bool VacunadoConPfizer { get; set; }
+    public bool VacunadoConAstrazeneca { get; set; }
+    public bool RecibioDosVacunas { get { return VacunadoConPfizer && VacunadoConAstrazeneca; } }
+}
+
+public class Programa
+{
+    public static void Main(string[] args)
+    {
+        List<Ciudadano> ciudadanos = GenerarCiudadanos();
+        List<Ciudadano> vacunadosPfizer = GenerarCiudadanosVacunados("Pfizer", 75);
+        List<Ciudadano> vacunadosAstrazeneca = GenerarCiudadanosVacunados("Astrazeneca", 75);
+
+        // Aplicar las vacunas a los ciudadanos
+        ciudadanos = AplicarVacunas(ciudadanos, vacunadosPfizer, vacunadosAstrazeneca);
+
+        // Listados requeridos
+        var noVacunados = ciudadanos.Where(c => !c.VacunadoConPfizer && !c.VacunadoConAstrazeneca).ToList();
+        var dosVacunas = ciudadanos.Where(c => c.RecibioDosVacunas).ToList();
+        var soloPfizer = ciudadanos.Where(c => c.VacunadoConPfizer && !c.VacunadoConAstrazeneca).ToList();
+        var soloAstrazeneca = ciudadanos.Where(c => !c.VacunadoConPfizer && c.VacunadoConAstrazeneca).ToList();
+
+        // Imprimir resultados
+        Console.WriteLine($"No vacunados: {noVacunados.Count}");
+        Console.WriteLine($"Vacunados con dos dosis: {dosVacunas.Count}");
+        Console.WriteLine($"Vacunados solo con Pfizer: {soloPfizer.Count}");
+        Console.WriteLine($"Vacunados solo con Astrazeneca: {soloAstrazeneca.Count}");
+
+        // Opcional: Generar PDF (requiere biblioteca adicional)
+    }
+
+    private static List<Ciudadano> GenerarCiudadanos()
+    {
+        var ciudadanos = new List<Ciudadano>();
+        for (int i = 1; i <= 500; i++)
+        {
+            ciudadanos.Add(new Ciudadano { Id = i, Nombre = $"Ciudadano{i}" });
+        }
+        return ciudadanos;
+    }
+
+    private static List<Ciudadano> GenerarCiudadanosVacunados(string vacuna, int cantidad)
+    {
+        var ciudadanosVacunados = new List<Ciudadano>();
+        for (int i = 1; i <= cantidad; i++)
+        {
+            if (vacuna == "Pfizer")
+                ciudadanosVacunados.Add(new Ciudadano { Id = i, Nombre = $"Ciudadano{i}", VacunadoConPfizer = true });
+            else if (vacuna == "Astrazeneca")
+                ciudadanosVacunados.Add(new Ciudadano { Id = i, Nombre = $"Ciudadano{i}", VacunadoConAstrazeneca = true });
+        }
+        return ciudadanosVacunados;
+    }
+
+    private static List<Ciudadano> AplicarVacunas(List<Ciudadano> ciudadanos, List<Ciudadano> vacunadosPfizer, List<Ciudadano> vacunadosAstrazeneca)
+    {
+        foreach (var ciudadano in ciudadanos)
+        {
+            if (vacunadosPfizer.Any(c => c.Id == ciudadano.Id))
+                ciudadano.VacunadoConPfizer = true;
+            if (vacunadosAstrazeneca.Any(c => c.Id == ciudadano.Id))
+                ciudadano.VacunadoConAstrazeneca = true;
+        }
+        return ciudadanos;
+    }
+}
