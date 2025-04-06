@@ -1,0 +1,68 @@
+using System;
+using System.Collections.Generic;
+
+class GrafosCentralidad
+{
+    static void Main(string[] args)
+    {
+        // Representación del grafo como lista de adyacencia
+        var grafo = new Dictionary<int, List<int>>
+        {
+            { 1, new List<int> { 2, 3 } },
+            { 2, new List<int> { 1, 4, 5 } },
+            { 3, new List<int> { 1 } },
+            { 4, new List<int> { 2 } },
+            { 5, new List<int> { 2 } }
+        };
+
+        // Cálculo de centralidad de grado
+        Console.WriteLine("Centralidad de Grado:");
+        foreach (var nodo in grafo.Keys)
+        {
+            Console.WriteLine($"Nodo {nodo}: {grafo[nodo].Count}");
+        }
+
+        // Cálculo de centralidad de cercanía
+        Console.WriteLine("\nCentralidad de Cercanía:");
+        foreach (var nodo in grafo.Keys)
+        {
+            double centralidadCercania = CalcularCentralidadCercania(grafo, nodo);
+            Console.WriteLine($"Nodo {nodo}: {centralidadCercania:F2}");
+        }
+    }
+
+    static double CalcularCentralidadCercania(Dictionary<int, List<int>> grafo, int nodo)
+    {
+        var distancias = new Dictionary<int, int>();
+        var cola = new Queue<int>();
+        var visitados = new HashSet<int>();
+
+        distancias[nodo] = 0;
+        cola.Enqueue(nodo);
+        visitados.Add(nodo);
+
+        while (cola.Count > 0)
+        {
+            int actual = cola.Dequeue();
+            foreach (var vecino in grafo[actual])
+            {
+                if (!visitados.Contains(vecino))
+                {
+                    distancias[vecino] = distancias[actual] + 1;
+                    cola.Enqueue(vecino);
+                    visitados.Add(vecino);
+                }
+            }
+        }
+
+        // Suma de las distancias a otros nodos
+        double sumaDistancias = 0;
+        foreach (var distancia in distancias.Values)
+        {
+            sumaDistancias += distancia;
+        }
+
+        // Centralidad de cercanía: inverso de la suma de distancias
+        return sumaDistancias > 0 ? 1.0 / sumaDistancias : 0;
+    }
+}
